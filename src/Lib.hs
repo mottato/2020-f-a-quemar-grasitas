@@ -65,7 +65,7 @@ tonificar cantidad unaFuncion unGimnasta = unGimnasta{
 colina :: Float->Ejercicio
 colina inclinacion tiempo unGimnasta = quemarCalorias (2*inclinacion*tiempo) unGimnasta
 
---montania :: Float->Ejercicio
+montania :: Float->Ejercicio
 montania inclinacion tiempo = (tonificar 1 (\cantidad->1)).(quemarCalorias (caloriasMontania inclinacion tiempo))
 
 caloriasMontania :: Float->Float->Float
@@ -78,4 +78,6 @@ data Rutina = Rutina {
     duracionTotal :: Float,
     ejercicios :: [Ejercicio]
 } deriving(Show)
+
+
 
