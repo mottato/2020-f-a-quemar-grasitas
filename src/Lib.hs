@@ -24,8 +24,8 @@ tieneCoeficienteDeTonificacionMayorA5 = (>5).coeficienteTonificacion
 
 --2)
 
-quemarCalorias :: Gimnasta->Float->Gimnasta
-quemarCalorias unGimnasta unasCalorias
+quemarCalorias :: Float->Gimnasta->Gimnasta
+quemarCalorias unasCalorias unGimnasta
  |not.noEstaObeso $unGimnasta                                               = disminuirCalorias unasCalorias (/150) unGimnasta
  |noEstaObeso unGimnasta && ((>30).edad $unGimnasta) && (unasCalorias > 200)= disminuirCalorias unasCalorias (+1) unGimnasta
  |otherwise                                                                 = disminuirCalorias unasCalorias (/(productoPesoYEdad unGimnasta)) unGimnasta
@@ -43,11 +43,11 @@ productoPesoYEdad unGimnasta= (peso unGimnasta)*(edad unGimnasta)
 type Ejercicio = Float->Gimnasta->Gimnasta
 
 caminataEnCinta :: Ejercicio
-caminataEnCinta tiempo unGimnasta = quemarCalorias unGimnasta (caloriasCinta 5 tiempo)
+caminataEnCinta tiempo unGimnasta = quemarCalorias (caloriasCinta 5 tiempo) unGimnasta
 
 
 entrenamientoEnCinta :: Ejercicio 
-entrenamientoEnCinta tiempo unGimnasta = quemarCalorias unGimnasta (caloriasCinta (6+(tiempo/5)/2) tiempo)
+entrenamientoEnCinta tiempo unGimnasta = quemarCalorias (caloriasCinta (6+(tiempo/5)/2) tiempo) unGimnasta
 
 caloriasCinta:: Float->Float->Float
 caloriasCinta velocidad tiempo = tiempo*velocidad
@@ -63,4 +63,19 @@ tonificar cantidad unaFuncion unGimnasta = unGimnasta{
 }
 
 colina :: Float->Ejercicio
-colina inclinacion tiempo unGimnasta = quemarCalorias unGimnasta (2*inclinacion*tiempo)
+colina inclinacion tiempo unGimnasta = quemarCalorias (2*inclinacion*tiempo) unGimnasta
+
+--montania :: Float->Ejercicio
+montania inclinacion tiempo = (tonificar 1 (\cantidad->1)).(quemarCalorias (caloriasMontania inclinacion tiempo))
+
+caloriasMontania :: Float->Float->Float
+caloriasMontania inclinacion tiempo = 2*(tiempo/2)*inclinacion + 2*(tiempo/2)*(inclinacion + 3)
+
+--4)
+
+data Rutina = Rutina {
+    nombreRutina :: String,
+    duracionTotal :: Float,
+    ejercicios :: [Ejercicio]
+} deriving(Show)
+
