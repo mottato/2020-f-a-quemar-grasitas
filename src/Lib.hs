@@ -37,3 +37,30 @@ disminuirCalorias cantidadCalorias unaFuncion unGimnasta = unGimnasta {
 
 productoPesoYEdad :: Gimnasta->Float
 productoPesoYEdad unGimnasta= (peso unGimnasta)*(edad unGimnasta)
+
+--3)
+
+type Ejercicio = Float->Gimnasta->Gimnasta
+
+caminataEnCinta :: Ejercicio
+caminataEnCinta tiempo unGimnasta = quemarCalorias unGimnasta (caloriasCinta 5 tiempo)
+
+
+entrenamientoEnCinta :: Ejercicio 
+entrenamientoEnCinta tiempo unGimnasta = quemarCalorias unGimnasta (caloriasCinta (6+(tiempo/5)/2) tiempo)
+
+caloriasCinta:: Float->Float->Float
+caloriasCinta velocidad tiempo = tiempo*velocidad
+ 
+pesas :: Float->Ejercicio
+pesas kilosALevantar tiempo unGimnasta
+ |tiempo >10 = tonificar kilosALevantar (/10) unGimnasta
+ |otherwise  = unGimnasta
+
+tonificar :: Float ->(Float->Float)->Gimnasta->Gimnasta
+tonificar cantidad unaFuncion unGimnasta = unGimnasta{
+    coeficienteTonificacion = (coeficienteTonificacion unGimnasta) + (unaFuncion cantidad)
+}
+
+colina :: Float->Ejercicio
+colina inclinacion tiempo unGimnasta = quemarCalorias unGimnasta (2*inclinacion*tiempo)
